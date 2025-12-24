@@ -1,7 +1,7 @@
 
 <!-- Banner -->
 <p align="center">
-  <!-- <img src="https://raw.githubusercontent.com/laminar-protocol/.github/main/assets/banner.png" alt="Laminar Protocol" width="800"> -->
+  <!-- <img src="https://raw.githubusercontent.com/Laminar-Bot/.github/main/assets/banner.png" alt="Laminar Protocol" width="800"> -->
 </p>
 
 <h1 align="center">Laminar Protocol</h1>
@@ -36,15 +36,15 @@ Production-ready Go clients for Solana's core DeFi infrastructure:
 
 | Library | Description | Install |
 |---------|-------------|---------|
-| [**helius-go**](https://github.com/laminar-protocol/helius-go) | Helius RPC, webhooks, DAS API, enhanced transactions | `go get github.com/laminar-protocol/helius-go` |
-| [**jupiter-go**](https://github.com/laminar-protocol/jupiter-go) | Jupiter swap quotes, transactions, price API | `go get github.com/laminar-protocol/jupiter-go` |
-| [**birdeye-go**](https://github.com/laminar-protocol/birdeye-go) | Birdeye prices, analytics, wallet tracking, OHLCV | `go get github.com/laminar-protocol/birdeye-go` |
+| [**helius-go**](https://github.com/Laminar-Bot/helius-go) | Helius RPC, webhooks, DAS API, enhanced transactions | `go get github.com/Laminar-Bot/helius-go` |
+| [**jupiter-go**](https://github.com/Laminar-Bot/jupiter-go) | Jupiter swap quotes, transactions, price API | `go get github.com/Laminar-Bot/jupiter-go` |
+| [**birdeye-go**](https://github.com/Laminar-Bot/birdeye-go) | Birdeye prices, analytics, wallet tracking, OHLCV | `go get github.com/Laminar-Bot/birdeye-go` |
 
 ### Security Tools
 
 | Library | Description | Install |
 |---------|-------------|---------|
-| [**solana-token-guard**](https://github.com/laminar-protocol/solana-token-guard) | Token safety screening - detect rugs, honeypots, concentrated holdings | `go get github.com/laminar-protocol/solana-token-guard` |
+| [**solana-token-guard**](https://github.com/Laminar-Bot/solana-token-guard) | Token safety screening - detect rugs, honeypots, concentrated holdings | `go get github.com/Laminar-Bot/solana-token-guard` |
 
 ---
 
@@ -53,7 +53,7 @@ Production-ready Go clients for Solana's core DeFi infrastructure:
 ### Get Token Price
 
 ```go
-import "github.com/laminar-protocol/jupiter-go"
+import "github.com/Laminar-Bot/jupiter-go"
 
 client := jupiter.NewClient(jupiter.DefaultConfig())
 price, _ := client.GetPrice(ctx, "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263")
@@ -63,7 +63,7 @@ fmt.Printf("BONK: $%s\n", price.Price)
 ### Execute a Swap
 
 ```go
-import "github.com/laminar-protocol/jupiter-go"
+import "github.com/Laminar-Bot/jupiter-go"
 
 client := jupiter.NewClient(jupiter.DefaultConfig())
 
@@ -86,7 +86,7 @@ swap, _ := client.GetSwapTransaction(ctx, &jupiter.SwapRequest{
 ### Screen Token Safety
 
 ```go
-import "github.com/laminar-protocol/solana-token-guard"
+import "github.com/Laminar-Bot/solana-token-guard"
 
 guard := tokenguard.New(tokenguard.Config{
     Helius:  heliusClient,
@@ -104,7 +104,7 @@ if result.Passed {
 ### Subscribe to Wallet Activity
 
 ```go
-import "github.com/laminar-protocol/helius-go"
+import "github.com/Laminar-Bot/helius-go"
 
 client := helius.NewClient(helius.Config{APIKey: "..."})
 
@@ -195,7 +195,7 @@ We welcome contributions! Each repository has its own contributing guide:
 3. Write tests for your changes
 4. Submit a pull request
 
-Please read our [Code of Conduct](https://github.com/laminar-protocol/.github/blob/main/CODE_OF_CONDUCT.md) before contributing.
+Please read our [Code of Conduct](https://github.com/Laminar-Bot/.github/blob/main/CODE_OF_CONDUCT.md) before contributing.
 
 ---
 
