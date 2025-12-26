@@ -37,7 +37,6 @@ Production-ready Go clients for Solana's core DeFi infrastructure:
 | Library | Description | Install |
 |---------|-------------|---------|
 | [**helius-go**](https://github.com/Laminar-Bot/helius-go) | Helius RPC, webhooks, DAS API, enhanced transactions | `go get github.com/Laminar-Bot/helius-go` |
-| [**jupiter-go**](https://github.com/Laminar-Bot/jupiter-go) | Jupiter swap quotes, transactions, price API | `go get github.com/Laminar-Bot/jupiter-go` |
 | [**birdeye-go**](https://github.com/Laminar-Bot/birdeye-go) | Birdeye prices, analytics, wallet tracking, OHLCV | `go get github.com/Laminar-Bot/birdeye-go` |
 
 ### Security Tools
