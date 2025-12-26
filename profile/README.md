@@ -1,4 +1,3 @@
-
 <!-- Banner -->
 <p align="center">
   <img src="https://raw.githubusercontent.com/Laminar-Bot/.github/main/assets/banner.png" alt="Laminar Protocol" width="800">
@@ -36,8 +35,10 @@ Production-ready Go clients for Solana's core DeFi infrastructure:
 
 | Library | Description | Install |
 |---------|-------------|---------|
-| [**helius-go**](https://github.com/Laminar-Bot/helius-go) | Helius RPC, webhooks, DAS API, enhanced transactions | `go get github.com/Laminar-Bot/helius-go` |
-| [**birdeye-go**](https://github.com/Laminar-Bot/birdeye-go) | Birdeye prices, analytics, wallet tracking, OHLCV | `go get github.com/Laminar-Bot/birdeye-go` |
+| [**helius-go**](https://github.com/Laminar-Bot/helius-go) | Helius RPC, webhooks, DAS API, priority fees, token holders | `go get github.com/Laminar-Bot/helius-go` |
+| [**birdeye-go**](https://github.com/Laminar-Bot/birdeye-go) | Birdeye prices, token security, token overview | `go get github.com/Laminar-Bot/birdeye-go` |
+
+> **Note:** For Jupiter swap execution, we recommend [ilkamo/jupiter-go](https://github.com/ilkamo/jupiter-go) - a well-maintained community library.
 
 ### Security Tools
 
@@ -52,34 +53,29 @@ Production-ready Go clients for Solana's core DeFi infrastructure:
 ### Get Token Price
 
 ```go
-import "github.com/Laminar-Bot/jupiter-go"
+import birdeye "github.com/Laminar-Bot/birdeye-go"
 
-client := jupiter.NewClient(jupiter.DefaultConfig())
+client, _ := birdeye.NewClient("your-api-key")
 price, _ := client.GetPrice(ctx, "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263")
-fmt.Printf("BONK: $%s\n", price.Price)
+fmt.Printf("BONK: $%s\n", price.Value)
 ```
 
-### Execute a Swap
+### Execute a Swap (using ilkamo/jupiter-go)
 
 ```go
-import "github.com/Laminar-Bot/jupiter-go"
+import "github.com/ilkamo/jupiter-go"
 
-client := jupiter.NewClient(jupiter.DefaultConfig())
+client, _ := jupiter.NewClient(jupiter.DefaultConfig())
 
 // Get quote: 1 SOL -> BONK
-quote, _ := client.GetQuote(ctx, &jupiter.QuoteRequest{
-    InputMint:   jupiter.NativeSOL,
+quote, _ := client.GetQuote(ctx, jupiter.GetQuoteParams{
+    InputMint:   "So11111111111111111111111111111111111111112",
     OutputMint:  "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
-    Amount:      jupiter.SOLToLamports(decimal.NewFromInt(1)),
+    Amount:      1_000_000_000, // 1 SOL in lamports
     SlippageBps: 100,
 })
 
-// Build transaction
-swap, _ := client.GetSwapTransaction(ctx, &jupiter.SwapRequest{
-    QuoteResponse: quote,
-    UserPublicKey: "YourWallet...",
-})
-// Sign and send swap.SwapTransaction
+// Build and sign transaction...
 ```
 
 ### Screen Token Safety
@@ -103,16 +99,16 @@ if result.Passed {
 ### Subscribe to Wallet Activity
 
 ```go
-import "github.com/Laminar-Bot/helius-go"
+import helius "github.com/Laminar-Bot/helius-go"
 
-client := helius.NewClient(helius.Config{APIKey: "..."})
+client, _ := helius.NewClient("your-api-key")
 
 // Create webhook for wallet monitoring
 webhook, _ := client.CreateWebhook(ctx, &helius.CreateWebhookRequest{
     WebhookURL:       "https://your-server.com/webhook",
     AccountAddresses: []string{"WalletToWatch..."},
     TransactionTypes: []string{"SWAP"},
-    WebhookType:      "enhanced",
+    WebhookType:      helius.WebhookTypeEnhanced,
 })
 ```
 
@@ -128,22 +124,21 @@ Our libraries are designed to work together seamlessly:
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
-│  │ jupiter-go  │  │ helius-go   │  │ solana-token-guard  │ │
+│  │ helius-go   │  │ birdeye-go  │  │ solana-token-guard  │ │
 │  │             │  │             │  │                     │ │
-│  │ • Quotes    │  │ • RPC       │  │ • Safety checks     │ │
-│  │ • Swaps     │  │ • Webhooks  │  │ • Rug detection     │ │
-│  │ • Prices    │  │ • DAS API   │  │ • Risk scoring      │ │
+│  │ • RPC       │  │ • Prices    │  │ • Safety checks     │ │
+│  │ • Webhooks  │  │ • Security  │  │ • Rug detection     │ │
+│  │ • DAS API   │  │ • Overview  │  │ • Risk scoring      │ │
+│  │ • Holders   │  │             │  │                     │ │
 │  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘ │
 │         │                │                     │            │
-│         └────────────────┼─────────────────────┘            │
+│         └────────────────┴─────────────────────┘            │
 │                          │                                  │
-│                   ┌──────┴──────┐                          │
-│                   │ birdeye-go  │                          │
-│                   │             │                          │
-│                   │ • Prices    │                          │
-│                   │ • Analytics │                          │
-│                   │ • Wallets   │                          │
-│                   └─────────────┘                          │
+│              ┌───────────┴───────────┐                     │
+│              │  ilkamo/jupiter-go    │                     │
+│              │  (community library)  │                     │
+│              │  • Quotes & Swaps     │                     │
+│              └───────────────────────┘                     │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -157,18 +152,16 @@ Our libraries are designed to work together seamlessly:
 
 ## 📊 Feature Matrix
 
-| Feature | helius-go | jupiter-go | birdeye-go | token-guard |
-|---------|:---------:|:----------:|:----------:|:-----------:|
-| Token Prices | | ✅ | ✅ | |
-| Swap Execution | | ✅ | | |
-| RPC Methods | ✅ | | | |
-| Webhooks | ✅ | | | |
-| Token Metadata | ✅ | | ✅ | |
-| Wallet Tracking | | | ✅ | |
-| Holder Analysis | ✅ | | ✅ | ✅ |
-| Liquidity Data | | | ✅ | ✅ |
-| Security Checks | | | | ✅ |
-| OHLCV Charts | | | ✅ | |
+| Feature | helius-go | birdeye-go | token-guard |
+|---------|:---------:|:----------:|:-----------:|
+| Token Prices | | ✅ | |
+| RPC Methods | ✅ | | |
+| Webhooks | ✅ | | |
+| Token Metadata | ✅ | ✅ | |
+| Holder Analysis | ✅ | | ✅ |
+| Token Security | | ✅ | ✅ |
+| Priority Fees | ✅ | | |
+| DAS API | ✅ | | |
 
 ---
 
@@ -216,7 +209,7 @@ All open-source repositories are released under the [MIT License](https://openso
 
 Using our libraries? Let us know! Open a PR to add your project here.
 
-<!-- 
+<!--
 - [Project Name](link) - Brief description
 -->
 
