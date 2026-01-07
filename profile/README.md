@@ -12,7 +12,6 @@
 <p align="center">
   <a href="https://laminar.bot">Website</a> •
   <a href="https://docs.laminar.bot">Docs</a> •
-  <a href="https://twitter.com/laminarbot">Twitter</a> •
 </p>
 
 <p align="center">
@@ -199,8 +198,6 @@ All open-source repositories are released under the [MIT License](https://openso
 
 ## 💬 Community
 
-- **Discord** - [discord.gg/laminar](https://discord.gg/laminar) - Chat with the team and community
-- **Twitter** - [@laminarbot](https://twitter.com/laminarbot) - Updates and announcements
 - **GitHub Discussions** - Ask questions and share ideas
 
 ---
